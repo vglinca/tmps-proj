@@ -6,9 +6,9 @@ namespace Persistance.Entities
 {
 	public class ForeignerRentContract : RentContract
 	{
-		public string InternationalDriverLicenseId { get; set; }
-		public string PassportIdentifier { get; set; }
-		public string VisaIdentifier { get; set; }
-		public string MigrationNumber { get; set; }
+		public string InternationalDriverLicenseId { get; set; }//chosen by client
+		public string PassportIdentifier { get; set; }//chosen by client
+		public string VisaIdentifier { get; set; }//chosen by client
+		public string MigrationNumber { get; set; }//chosen by client
 	}
 }

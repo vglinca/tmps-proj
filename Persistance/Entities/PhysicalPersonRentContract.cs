@@ -6,7 +6,7 @@ namespace Persistance.Entities
 {
 	public class PhysicalPersonRentContract : RentContract
 	{
-		public string Idno { get; set; }
-		public string DriverLicenseId { get; set; }
+		public string Idno { get; set; }//chosen by client
+		public string DriverLicenseId { get; set; }//chosen by client
 	}
 }

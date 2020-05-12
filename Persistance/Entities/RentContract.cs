@@ -8,11 +8,11 @@ namespace Persistance.Entities
 	{
 		public long ClientId { get; set; }
 		public Client Client { get; set; }
-		public DateTime RentStartDate { get; set; }
-		public DateTime RentEndDate { get; set; }
-		public string Iban { get; set; }
+		public DateTime RentStartDate { get; set; }//chosen by client
+		public DateTime RentEndDate { get; set; }////chosen by client
+		public string Iban { get; set; }//chosen by client
 		public int RentCost { get; set; }
-		public long CarId { get; set; }
+		public long CarId { get; set; }//chosen by client
 		public Car Car { get; set; }
 	}
 }
