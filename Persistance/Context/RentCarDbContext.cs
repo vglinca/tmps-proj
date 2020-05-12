@@ -48,6 +48,68 @@ namespace Persistance.Context
 
 		private void SeedData(ModelBuilder modelBuilder)
 		{
+
+			modelBuilder.Entity<FuelType>().HasData(new List<FuelType>
+			{
+				new FuelType
+				{
+					Id = 1, Title = "Gasoline",
+				},
+				new FuelType
+				{
+					Id = 2, Title = "Diesel"
+				}
+			});
+
+			modelBuilder.Entity<Car>().HasData(new List<Car>
+			{
+				new Car
+				{
+					Id = 1,
+					ModelName = "RANGE ROVER SPORT 2014",
+					PricePerDay = 80,
+					Back = "SUV",
+					Color = "Black",
+					EngineDetails = "3.0d AT 190 kW / 258 Bhp",
+					FuelTypeId = 2,
+					TransmissionTypeId = TransmissionTypeId.Automat
+				},
+				new Car
+				{
+					Id = 2,
+					ModelName = "MERCEDES-BENZ S350 2015",
+					PricePerDay = 100,
+					Back = "Sedan",
+					Color = "Metallic Gri",
+					EngineDetails = "3.0d AT 4WD 190 kW / 258 Bhp",
+					FuelTypeId = 2,
+					TransmissionTypeId = TransmissionTypeId.Automat
+				},
+				new Car
+				{
+					Id = 3,
+					ModelName = "BMW X6 2015",
+					PricePerDay = 90,
+					Back = "Crossover",
+					Color = "White",
+					EngineDetails = "40d 3.0d AT 4WD 230 kW / 313 Bhp",
+					FuelTypeId = 2,
+					TransmissionTypeId = TransmissionTypeId.Automat
+				},
+				new Car
+				{
+					Id = 4,
+					ModelName = "BMW 320I 2016",
+					PricePerDay = 40,
+					Back = "Sedan",
+					Color = "Night Blue",
+					EngineDetails = "2000 Engine 135 kW / 184 bhp",
+					FuelTypeId = 1,
+					TransmissionTypeId = TransmissionTypeId.Automat
+				}
+			});
+
+
 			modelBuilder.Entity<Transmission>().HasKey(t => t.TransmissionTypeId);
 			modelBuilder.Entity<ClientType>().HasKey(ct => ct.ClientTypeId);
 			modelBuilder.Entity<Transmission>()

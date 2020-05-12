@@ -1,0 +1,11 @@
+D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\Core\bin\Debug\netcoreapp3.1\Core.deps.json
+D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\Core\bin\Debug\netcoreapp3.1\Core.dll
+D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\Core\bin\Debug\netcoreapp3.1\Core.pdb
+D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\Core\bin\Debug\netcoreapp3.1\Persistance.dll
+D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\Core\bin\Debug\netcoreapp3.1\Persistance.pdb
+D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\Core\obj\Debug\netcoreapp3.1\Core.csprojAssemblyReference.cache
+D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\Core\obj\Debug\netcoreapp3.1\Core.AssemblyInfoInputs.cache
+D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\Core\obj\Debug\netcoreapp3.1\Core.AssemblyInfo.cs
+D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\Core\obj\Debug\netcoreapp3.1\Core.csproj.CopyComplete
+D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\Core\obj\Debug\netcoreapp3.1\Core.dll
+D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\Core\obj\Debug\netcoreapp3.1\Core.pdb

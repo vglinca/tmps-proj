@@ -9,6 +9,10 @@ namespace Core.ClientDataBuilder
 	public class ClientDataBuilder : IClientDataBuilder
 	{
 		private ClientData _clientData;
+		public ClientDataBuilder()
+		{
+			_clientData = new ClientData();
+		}
 		public IClientDataBuilder AdministrationPassportIdentifier(string administrationPassportIdentifier)
 		{
 			_clientData.AdministrationPassportIdentifier = administrationPassportIdentifier;
