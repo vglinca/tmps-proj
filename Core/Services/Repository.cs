@@ -1,14 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Core.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Persistance.Context;
-using Persistance.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Persistance.Repository
+namespace Core.Services
 {
-	public class Repository : IRepository
+	public class Repository : IRepositoryService
 	{
 		private readonly RentCarDbContext _ctx;
 		public Repository(RentCarDbContext ctx)

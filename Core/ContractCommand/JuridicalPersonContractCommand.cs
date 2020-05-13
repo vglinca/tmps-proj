@@ -1,4 +1,5 @@
-﻿using Core.ClientDataBuilder;
+﻿using AutoMapper;
+using Core.ClientDataBuilder;
 using Core.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace Core.ContractCommand
 {
 	public class JuridicalPersonContractCommand : CreateContractCommandBase
 	{
-		public JuridicalPersonContractCommand(IRentCarService service) : base(service)
+		public JuridicalPersonContractCommand(IRepositoryService service, IMapper mapper) : base(service, mapper)
 		{
 		}
 		public override Task Execute(ClientData clientData)

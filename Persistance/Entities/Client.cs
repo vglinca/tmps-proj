@@ -8,7 +8,7 @@ namespace Persistance.Entities
 	{
 		public string Name { get; set; }//chosen by client
 		public ClientTypeId ClientTypeId { get; set; }
-		public ClientType ClientType { get; set; }//chosen by client
+		public virtual ClientType ClientType { get; set; }//chosen by client
 		public string Phone { get; set; }//chosen by client
 		public DateTime BirthDate { get; set; }//chosen by client
 		public virtual ICollection<RentContract> RentContracts { get; set; }

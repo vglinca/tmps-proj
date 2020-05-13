@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Persistance.Repository.Interfaces
+namespace Core.Services.Interfaces
 {
-	public interface IRepository
+	public interface IRepositoryService
 	{
 		Task<IEnumerable<TEntity>> GetAllAsync<TEntity>() where TEntity : class;
 		Task<TEntity> GetByIdAsync<TEntity>(long id) where TEntity : class;

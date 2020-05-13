@@ -15,12 +15,11 @@ namespace Persistance.Configuration
 					.WithMany(f => f.Cars)
 					.HasForeignKey(c => c.FuelTypeId)
 					.OnDelete(DeleteBehavior.Cascade);
-			builder.Property(c => c.TransmissionTypeId)
-					.HasConversion<long>();
 			builder.HasOne(c => c.Transmission)
 					.WithMany(t => t.Cars)
 					.HasForeignKey(c => c.TransmissionTypeId)
-					.OnDelete(DeleteBehavior.Cascade);
+					.OnDelete(DeleteBehavior.Cascade)
+					.IsRequired();
 			builder.HasMany(c => c.RentContracts)
 					.WithOne(rc => rc.Car)
 					.HasForeignKey(rc => rc.CarId)

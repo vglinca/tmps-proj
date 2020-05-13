@@ -1,4 +1,5 @@
-﻿using Core.ClientDataBuilder;
+﻿using AutoMapper;
+using Core.ClientDataBuilder;
 using Core.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,12 @@ namespace Core.ContractCommand
 {
 	public abstract class CreateContractCommandBase
 	{
-		protected readonly IRentCarService _service;
-		public CreateContractCommandBase(IRentCarService service)
+		protected readonly IRepositoryService _service;
+		protected readonly IMapper _mapper;
+		public CreateContractCommandBase(IRepositoryService service, IMapper mapper)
 		{
 			_service = service;
+			_mapper = mapper;
 		}
 		public abstract Task Execute(ClientData clientData);
 	}

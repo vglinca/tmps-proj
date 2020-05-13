@@ -1,12 +1,12 @@
-﻿using Core.ClientDataBuilder;
+﻿using AutoMapper;
+using Core.ClientDataBuilder;
 using Core.ContractCommand;
 using Core.Services;
 using Core.Services.Interfaces;
+using Core.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Persistance.Context;
-using Persistance.Repository;
-using Persistance.Repository.Interfaces;
 using System;
 using System.Threading.Tasks;
 
@@ -24,9 +24,22 @@ namespace App
 
 		private static IServiceProvider ConfigureServices(IServiceCollection services)
 		{
+			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 			services.AddDbContext<RentCarDbContext>();
-			services.AddScoped<IRepository, Repository>();
-			services.AddTransient<IRentCarService, RentCarService>();
+			services.AddTransient<Repository>();
+			services.AddTransient<RentCarService>();
+			services.AddTransient<Resolver.ServiceResolver>(provider => key =>
+			{
+				switch (key)
+				{
+					case ServiceType.Repository:
+						return provider.GetService<Repository>();
+					case ServiceType.RentCarService:
+						return provider.GetService<RentCarService>();
+					default:
+						return null;
+				}
+			});
 			services.AddTransient<ConsoleApp>();
 
 			return services.BuildServiceProvider();

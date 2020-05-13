@@ -48,3 +48,5 @@ D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\App\o
 D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\App\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
 D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\App\bin\Debug\netcoreapp3.1\Core.dll
 D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\App\bin\Debug\netcoreapp3.1\Core.pdb
+D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\App\bin\Debug\netcoreapp3.1\AutoMapper.dll
+D:\Универ\3 курс\семестр 2\курсовая\CarRentSystem\App\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

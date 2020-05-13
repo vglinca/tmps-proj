@@ -1,37 +1,42 @@
-﻿using Core.ClientDataBuilder;
+﻿using AutoMapper;
+using Core.ClientDataBuilder;
 using Core.ContractCommand;
+using Core.Services;
 using Core.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using static Core.Utils.Resolver;
 
 namespace App
 {
 	public class ConsoleApp
 	{
-		private readonly IRentCarService _service;
-		public ConsoleApp(IRentCarService service)
+		private readonly IRepositoryService _service;
+		private readonly IMapper _mapper;
+		public ConsoleApp(ServiceResolver resolver, IMapper mapper)
 		{
-			_service = service;
+			_service = resolver(Core.Utils.ServiceType.RentCarService);
+			_mapper = mapper;
 		}
 
 		public async Task RunAsync()
 		{
 			try
 			{
-				var command = new PhysicalPersonContractCommand(_service);
+				var command = new PhysicalPersonContractCommand(_service, _mapper);
 				var clientData = new ClientDataBuilder()
-						.BirthDate(new DateTime(1998, 2, 17))
+						.BirthDate(new DateTime(1995, 11, 22))
 						.ClientTypeId(Persistance.Entities.ClientTypeId.PhysicalPerson)
-						.Name("Vitaly Glinca")
-						.Phone("12344555")
+						.Name("Vasya Ivanov")
+						.Phone("836583")
 						.CarId(1)
-						.Iban("rljgbr43tjg")
-						.RentStartDate(new DateTime(2020, 5, 17))
-						.RentEndDate(new DateTime(2020, 5, 22))
-						.Idno("ih484y3f3h4g932fh393h39f")
-						.DriverLicenseId("12333200")
+						.Iban($"{Guid.NewGuid().ToString()}")
+						.RentStartDate(new DateTime(2020, 5, 20))
+						.RentEndDate(new DateTime(2020, 5, 28))
+						.Idno($"{Guid.NewGuid().ToString()}")
+						.DriverLicenseId("985777")
 						.Build();
 				await command.Execute(clientData);
 			}
