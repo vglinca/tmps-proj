@@ -16,8 +16,6 @@ namespace App.RentContractStrategy
 		public PhysicalPersonRentContractStrategy(CreateContractCommandBase command, IRepositoryService service) : base(command, service)
 		{}
 
-		
-
 		public override async Task GatherContractInfo()
 		{
 			Console.Write("Your birth date: ");
@@ -57,21 +55,25 @@ namespace App.RentContractStrategy
 				var car = await _service.GetByIdAsync<Car>(carId);
 				var total = car.PricePerDay * (int) ((startDate - endDate).TotalDays);
 
+				total = CalculateDiscount(total, (int) ((startDate - endDate).TotalDays));
+
 				Console.WriteLine($"Total: ${total}");
 				Console.WriteLine();
 				Console.WriteLine("Proceed? \n1 - Yes\n2 - No");
 				int yesNo = default;
+
 				while(! int.TryParse(Console.ReadLine(), out yesNo))
 				{
 					Console.WriteLine("Enter correct value.");
 				}
+				switch (yesNo)
+				{
+					case 1:
+						Console.WriteLine("Enter card number: ");
+						var iban = Console.ReadLine();
 
-				Console.WriteLine("Enter card number: ");
-				var iban = Console.ReadLine();
-
-				Console.WriteLine();
-
-				var clientData = new ClientDataBuilder()
+						Console.WriteLine();
+						var clientData = new ClientDataBuilder()
 							.BirthDate(DateTime.Parse(birthDate))
 							.ClientTypeId(ClientTypeId.PhysicalPerson)
 							.Name(fullName)
@@ -85,20 +87,54 @@ namespace App.RentContractStrategy
 							.RentCost(total)
 							.Build();
 
-				await _command.Execute(clientData);
+						var color = Console.ForegroundColor;
+						try
+						{
+							await _command.Execute(clientData);
+							Console.ForegroundColor = ConsoleColor.Green;
+							Console.WriteLine("Request has been successfully confirmed.....");
+							
+						}
+						catch (Exception)
+						{
+							Console.ForegroundColor = ConsoleColor.Red;
+							Console.WriteLine("An error occured during transaction....");
+							throw;
+						}
+						finally
+						{
+							Console.ForegroundColor = color;
+						}
+						break;
+					case 2:
+						Environment.Exit(0);
+						break;
+					default:
+						break;
+				}
 			}
 			catch (Exception)
 			{
 
 				throw;
 			}
-
-			
 		}
 
 		public override int CalculateDiscount(int total, int days)
 		{
-			return 0;
+			if(days < 10)
+			{
+				return total;
+			}
+			else if (days > 10 && days < 31 && total > 3000)
+			{
+				total -= (int) (total * 0.05);
+			}
+			else if(days >= 31)
+			{
+				total -= (int) (total * 0.1);
+			}
+			return total;
 		}
 	}
 }

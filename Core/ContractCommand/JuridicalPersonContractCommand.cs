@@ -20,14 +20,11 @@ namespace Core.ContractCommand
 			var contract = new JuridicalPersonRentContractFactory().CreateRentContract() as JuridicalPersonRentContract;
 			var client = _mapper.Map<Client>(clientData);
 
-			var car = await _service.GetByIdAsync<Car>(clientData.CarId);
-
 			await _service.AddAsync<Client>(client);
 
 			_mapper.Map(clientData, contract);
 
 			contract.ClientId = client.Id;
-			//contract.RentCost = car.PricePerDay * (int) ((clientData.RentEndDate - clientData.RentStartDate).TotalDays);
 
 			await _service.AddAsync<JuridicalPersonRentContract>(contract);
 		}

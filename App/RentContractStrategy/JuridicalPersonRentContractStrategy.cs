@@ -12,11 +12,9 @@ namespace App.RentContractStrategy
 	public class JuridicalPersonRentContractStrategy : RentContractCreationStrategyBase
 	{
 		public JuridicalPersonRentContractStrategy(CreateContractCommandBase command, IRepositoryService service) : base(command, service)
-		{
-		}
+		{}
 
 		
-
 		public override async Task GatherContractInfo()
 		{
 			Console.WriteLine("Enter company name: ");
@@ -69,26 +67,62 @@ namespace App.RentContractStrategy
 
 				Console.WriteLine($"Total: ${total}");
 				Console.WriteLine();
-				Console.WriteLine("Enter bank account: ");
-				var iban = Console.ReadLine();
 
-				var clientData = new ClientDataBuilder()
-					.ClientTypeId(ClientTypeId.JuridicalPerson)
-					.Name(company)
-					.CompanyAddress(address)
-					.CompanyRegistrationDate(regDate)
-					.UpperHouseExtractIdentifier(upperHouseExtractIdentifier)
-					.AdministrationPassportIdentifier(card)
-					.DriverLicenseId(driverLicense)
-					.GeneralManagerSignatureIdentifier(signature)
-					.RentStartDate(startDate)
-					.RentEndDate(endDate)
-					.CarId(carId)
-					.Iban(iban)
-					.RentCost(total)
-					.Build();
+				Console.WriteLine("Proceed? \n1 - Yes\n2 - No");
+				int yesNo = default;
 
-				await _command.Execute(clientData);
+				while (!int.TryParse(Console.ReadLine(), out yesNo))
+				{
+					Console.WriteLine("Enter correct value.");
+				}
+
+				switch (yesNo)
+				{
+					case 1:
+						Console.WriteLine("Enter bank account: ");
+						var iban = Console.ReadLine();
+
+						Console.WriteLine();
+						var clientData = new ClientDataBuilder()
+							.ClientTypeId(ClientTypeId.JuridicalPerson)
+							.Name(company)
+							.CompanyAddress(address)
+							.CompanyRegistrationDate(regDate)
+							.UpperHouseExtractIdentifier(upperHouseExtractIdentifier)
+							.AdministrationPassportIdentifier(card)
+							.DriverLicenseId(driverLicense)
+							.GeneralManagerSignatureIdentifier(signature)
+							.RentStartDate(startDate)
+							.RentEndDate(endDate)
+							.CarId(carId)
+							.Iban(iban)
+							.RentCost(total)
+							.Build();
+
+						var color = Console.ForegroundColor;
+						try
+						{
+							await _command.Execute(clientData);
+							Console.ForegroundColor = ConsoleColor.Green;
+							Console.WriteLine("Request has been successfully confirmed.....");
+						}
+						catch (Exception)
+						{
+							Console.ForegroundColor = ConsoleColor.Red;
+							Console.WriteLine("An error occured during transaction....");
+							throw;
+						}
+						finally
+						{
+							Console.ForegroundColor = color;
+						}
+						break;
+					case 2:
+						Environment.Exit(0);
+						break;
+					default:
+						break;
+				}
 			}
 			catch (EntityNotFoundException ex)
 			{
