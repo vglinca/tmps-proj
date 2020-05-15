@@ -15,8 +15,15 @@ namespace App.RentContractStrategy
 		{
 		}
 
+		
+
 		public override async Task GatherContractInfo()
 		{
+		}
+
+		public override int CalculateDiscount(int total, int days)
+		{
+			return 0;
 		}
 	}
 }

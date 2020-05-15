@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistance.Migrations
 {
-    public partial class Initial_Migration : Migration
+    public partial class FirstNewMigrationAfterTotalDeletion_Migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -36,12 +36,13 @@ namespace Persistance.Migrations
                 name: "Transmission",
                 columns: table => new
                 {
-                    TransmissionTypeId = table.Column<long>(nullable: false),
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transmission", x => x.TransmissionTypeId);
+                    table.PrimaryKey("PK_Transmission", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -78,8 +79,7 @@ namespace Persistance.Migrations
                     FuelTypeId = table.Column<long>(nullable: false),
                     Color = table.Column<string>(nullable: true),
                     Back = table.Column<string>(nullable: true),
-                    TransmissionTypeId = table.Column<long>(nullable: false),
-                    TransmissionTypeId1 = table.Column<long>(nullable: true)
+                    TransmissionId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -91,11 +91,11 @@ namespace Persistance.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Cars_Transmission_TransmissionTypeId1",
-                        column: x => x.TransmissionTypeId1,
+                        name: "FK_Cars_Transmission_TransmissionId",
+                        column: x => x.TransmissionId,
                         principalTable: "Transmission",
-                        principalColumn: "TransmissionTypeId",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -152,12 +152,32 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Transmission",
-                columns: new[] { "TransmissionTypeId", "Title" },
+                table: "FuelTypes",
+                columns: new[] { "Id", "Title" },
                 values: new object[,]
                 {
-                    { 0L, "Mechanic" },
-                    { 1L, "Automat" }
+                    { 1L, "Gasoline" },
+                    { 2L, "Diesel" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Transmission",
+                columns: new[] { "Id", "Title" },
+                values: new object[,]
+                {
+                    { 1L, "Automat" },
+                    { 2L, "Mechanic" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Cars",
+                columns: new[] { "Id", "Back", "Color", "EngineDetails", "FuelTypeId", "ModelName", "PricePerDay", "TransmissionId" },
+                values: new object[,]
+                {
+                    { 1L, "SUV", "Black", "3.0d AT 190 kW / 258 Bhp", 2L, "RANGE ROVER SPORT 2014", 80, 1L },
+                    { 2L, "Sedan", "Metallic Gri", "3.0d AT 4WD 190 kW / 258 Bhp", 2L, "MERCEDES-BENZ S350 2015", 100, 1L },
+                    { 3L, "Crossover", "White", "40d 3.0d AT 4WD 230 kW / 313 Bhp", 2L, "BMW X6 2015", 90, 1L },
+                    { 4L, "Sedan", "Night Blue", "2000 Engine 135 kW / 184 bhp", 1L, "BMW 320I 2016", 40, 1L }
                 });
 
             migrationBuilder.CreateIndex(
@@ -166,9 +186,9 @@ namespace Persistance.Migrations
                 column: "FuelTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cars_TransmissionTypeId1",
+                name: "IX_Cars_TransmissionId",
                 table: "Cars",
-                column: "TransmissionTypeId1");
+                column: "TransmissionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_ClientTypeId",

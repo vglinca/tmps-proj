@@ -62,6 +62,18 @@ namespace Persistance.Context
 				}
 			});
 
+			modelBuilder.Entity<Transmission>()
+				.HasData(new List<Transmission> {
+					new Transmission
+					{
+						Id = 1, Title = "Automat"
+					},
+					new Transmission
+					{
+						Id = 2, Title = "Mechanic"
+					}
+				});
+
 			modelBuilder.Entity<Car>().HasData(new List<Car>
 			{
 				new Car
@@ -73,7 +85,7 @@ namespace Persistance.Context
 					Color = "Black",
 					EngineDetails = "3.0d AT 190 kW / 258 Bhp",
 					FuelTypeId = 2,
-					TransmissionTypeId = TransmissionTypeId.Automat
+					TransmissionId = 1
 				},
 				new Car
 				{
@@ -84,7 +96,7 @@ namespace Persistance.Context
 					Color = "Metallic Gri",
 					EngineDetails = "3.0d AT 4WD 190 kW / 258 Bhp",
 					FuelTypeId = 2,
-					TransmissionTypeId = TransmissionTypeId.Automat
+					TransmissionId = 1
 				},
 				new Car
 				{
@@ -95,7 +107,7 @@ namespace Persistance.Context
 					Color = "White",
 					EngineDetails = "40d 3.0d AT 4WD 230 kW / 313 Bhp",
 					FuelTypeId = 2,
-					TransmissionTypeId = TransmissionTypeId.Automat
+					TransmissionId = 1
 				},
 				new Car
 				{
@@ -106,23 +118,12 @@ namespace Persistance.Context
 					Color = "Night Blue",
 					EngineDetails = "2000 Engine 135 kW / 184 bhp",
 					FuelTypeId = 1,
-					TransmissionTypeId = TransmissionTypeId.Automat
+					TransmissionId = 1
 				}
 			});
 
 
-			modelBuilder.Entity<Transmission>().HasKey(t => t.TransmissionTypeId);
 			modelBuilder.Entity<ClientType>().HasKey(ct => ct.ClientTypeId);
-			modelBuilder.Entity<Transmission>()
-				.HasData(
-					Enum.GetValues(typeof(TransmissionTypeId))
-					.Cast<TransmissionTypeId>()
-					.Select(t => new Transmission
-					{
-						TransmissionTypeId = t,
-						Title = t.ToString()
-					}));
-
 			modelBuilder.Entity<ClientType>()
 				.HasData(
 					Enum.GetValues(typeof(ClientTypeId))

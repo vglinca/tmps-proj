@@ -11,9 +11,6 @@ namespace Persistance.Configuration
 	{
 		public void Configure(EntityTypeBuilder<Transmission> builder)
 		{
-			builder.Property(t => t.TransmissionTypeId)
-					.HasConversion<long>();
-			builder.HasKey(t => t.TransmissionTypeId);
 		}
 	}
 }

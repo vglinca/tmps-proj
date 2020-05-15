@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Persistance.Entities
 {
-	public class Transmission
+	public class Transmission : BaseEntity
 	{
-		public TransmissionTypeId TransmissionTypeId { get; set; }
 		public string Title { get; set; }
 		public virtual ICollection<Car> Cars { get; set; }
 	}

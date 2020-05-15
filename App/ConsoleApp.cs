@@ -25,20 +25,20 @@ namespace App
 
 		public async Task RunAsync()
 		{
+			Console.SetWindowSize( (int)(Console.WindowWidth * 1.2), Console.WindowHeight);
 			try
 			{
-				const string format = "Car number: {0,6}Model: {1,6}Transmission: {2,20}Engine: {3,20}Price/Day: {4,20}";
 				var cars = await _service.GetAllAsync<Car>();
 
 				Console.WriteLine("\t\tCARS");
-
+				Console.WriteLine("{0,-20}{1,-30}{2,-50}{3,-20}{4,-10}", "Car number", "Model", "Engine", "Transmission", "Price/Day ($)");
 				foreach (var car in cars)
 				{
-					Console.WriteLine(string.Format(format, car.Id, car.ModelName, car.TransmissionTypeId.ToString(), car.EngineDetails, $"${car.PricePerDay}"));
+					Console.WriteLine("{0,-20}{1,-30}{2,-50}{3,-20}{4,-10}", car.Id, car.ModelName, car.EngineDetails, car.Transmission.Title, car.PricePerDay);
 				}
 
 				var clientTypes = await _service.GetAllAsync<ClientType>();
-
+				Console.WriteLine();
 				Console.WriteLine("Which client type are You?");
 				var i = 0;
 				foreach (var type in clientTypes)

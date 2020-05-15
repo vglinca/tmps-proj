@@ -10,8 +10,8 @@ using Persistance.Context;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(RentCarDbContext))]
-    [Migration("20200511142707_Initial_Migration")]
-    partial class Initial_Migration
+    [Migration("20200515174838_FirstNewMigrationAfterTotalDeletion_Migration")]
+    partial class FirstNewMigrationAfterTotalDeletion_Migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,19 +46,62 @@ namespace Persistance.Migrations
                     b.Property<int>("PricePerDay")
                         .HasColumnType("int");
 
-                    b.Property<long>("TransmissionTypeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("TransmissionTypeId1")
+                    b.Property<long>("TransmissionId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FuelTypeId");
 
-                    b.HasIndex("TransmissionTypeId1");
+                    b.HasIndex("TransmissionId");
 
                     b.ToTable("Cars");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Back = "SUV",
+                            Color = "Black",
+                            EngineDetails = "3.0d AT 190 kW / 258 Bhp",
+                            FuelTypeId = 2L,
+                            ModelName = "RANGE ROVER SPORT 2014",
+                            PricePerDay = 80,
+                            TransmissionId = 1L
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Back = "Sedan",
+                            Color = "Metallic Gri",
+                            EngineDetails = "3.0d AT 4WD 190 kW / 258 Bhp",
+                            FuelTypeId = 2L,
+                            ModelName = "MERCEDES-BENZ S350 2015",
+                            PricePerDay = 100,
+                            TransmissionId = 1L
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            Back = "Crossover",
+                            Color = "White",
+                            EngineDetails = "40d 3.0d AT 4WD 230 kW / 313 Bhp",
+                            FuelTypeId = 2L,
+                            ModelName = "BMW X6 2015",
+                            PricePerDay = 90,
+                            TransmissionId = 1L
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            Back = "Sedan",
+                            Color = "Night Blue",
+                            EngineDetails = "2000 Engine 135 kW / 184 bhp",
+                            FuelTypeId = 1L,
+                            ModelName = "BMW 320I 2016",
+                            PricePerDay = 40,
+                            TransmissionId = 1L
+                        });
                 });
 
             modelBuilder.Entity("Persistance.Entities.Client", b =>
@@ -130,6 +173,18 @@ namespace Persistance.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FuelTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Title = "Gasoline"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Title = "Diesel"
+                        });
                 });
 
             modelBuilder.Entity("Persistance.Entities.RentContract", b =>
@@ -174,26 +229,28 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Persistance.Entities.Transmission", b =>
                 {
-                    b.Property<long>("TransmissionTypeId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TransmissionTypeId");
+                    b.HasKey("Id");
 
                     b.ToTable("Transmission");
 
                     b.HasData(
                         new
                         {
-                            TransmissionTypeId = 0L,
-                            Title = "Mechanic"
+                            Id = 1L,
+                            Title = "Automat"
                         },
                         new
                         {
-                            TransmissionTypeId = 1L,
-                            Title = "Automat"
+                            Id = 2L,
+                            Title = "Mechanic"
                         });
                 });
 
@@ -264,7 +321,9 @@ namespace Persistance.Migrations
 
                     b.HasOne("Persistance.Entities.Transmission", "Transmission")
                         .WithMany("Cars")
-                        .HasForeignKey("TransmissionTypeId1");
+                        .HasForeignKey("TransmissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Persistance.Entities.Client", b =>

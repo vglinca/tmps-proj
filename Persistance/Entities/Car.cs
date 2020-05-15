@@ -13,7 +13,7 @@ namespace Persistance.Entities
 		public virtual FuelType FuelType { get; set; }
 		public string Color { get; set; }
 		public string Back { get; set; }
-		public TransmissionTypeId TransmissionTypeId { get; set; }
+		public long TransmissionId { get; set; }
 		public virtual Transmission Transmission { get; set; }
 		public virtual ICollection<RentContract> RentContracts { get; set; }
 	}

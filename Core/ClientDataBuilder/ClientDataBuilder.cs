@@ -127,6 +127,12 @@ namespace Core.ClientDataBuilder
 			return this;
 		}
 
+		public IClientDataBuilder RentCost(int rentCost)
+		{
+			_clientData.RentCost = rentCost;
+			return this;
+		}
+
 		public ClientData Build()
 		{
 			return _clientData;

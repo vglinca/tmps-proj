@@ -28,7 +28,7 @@ namespace Core.ContractCommand
 			_mapper.Map(clientData, contract);
 
 			contract.ClientId = client.Id;
-			contract.RentCost = car.PricePerDay * (int) ((clientData.RentEndDate - clientData.RentStartDate).TotalDays);
+			//contract.RentCost = car.PricePerDay * (int) ((clientData.RentEndDate - clientData.RentStartDate).TotalDays);
 
 			await _service.AddAsync<ForeignerRentContract>(contract);
 		}

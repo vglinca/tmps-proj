@@ -44,17 +44,14 @@ namespace Persistance.Migrations
                     b.Property<int>("PricePerDay")
                         .HasColumnType("int");
 
-                    b.Property<long>("TransmissionTypeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("TransmissionTypeId1")
+                    b.Property<long>("TransmissionId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FuelTypeId");
 
-                    b.HasIndex("TransmissionTypeId1");
+                    b.HasIndex("TransmissionId");
 
                     b.ToTable("Cars");
 
@@ -68,7 +65,7 @@ namespace Persistance.Migrations
                             FuelTypeId = 2L,
                             ModelName = "RANGE ROVER SPORT 2014",
                             PricePerDay = 80,
-                            TransmissionTypeId = 1L
+                            TransmissionId = 1L
                         },
                         new
                         {
@@ -79,7 +76,7 @@ namespace Persistance.Migrations
                             FuelTypeId = 2L,
                             ModelName = "MERCEDES-BENZ S350 2015",
                             PricePerDay = 100,
-                            TransmissionTypeId = 1L
+                            TransmissionId = 1L
                         },
                         new
                         {
@@ -90,7 +87,7 @@ namespace Persistance.Migrations
                             FuelTypeId = 2L,
                             ModelName = "BMW X6 2015",
                             PricePerDay = 90,
-                            TransmissionTypeId = 1L
+                            TransmissionId = 1L
                         },
                         new
                         {
@@ -101,7 +98,7 @@ namespace Persistance.Migrations
                             FuelTypeId = 1L,
                             ModelName = "BMW 320I 2016",
                             PricePerDay = 40,
-                            TransmissionTypeId = 1L
+                            TransmissionId = 1L
                         });
                 });
 
@@ -112,16 +109,10 @@ namespace Persistance.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<long>("ClientTypeId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -230,26 +221,28 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Persistance.Entities.Transmission", b =>
                 {
-                    b.Property<long>("TransmissionTypeId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TransmissionTypeId");
+                    b.HasKey("Id");
 
                     b.ToTable("Transmission");
 
                     b.HasData(
                         new
                         {
-                            TransmissionTypeId = 0L,
-                            Title = "Mechanic"
+                            Id = 1L,
+                            Title = "Automat"
                         },
                         new
                         {
-                            TransmissionTypeId = 1L,
-                            Title = "Automat"
+                            Id = 2L,
+                            Title = "Mechanic"
                         });
                 });
 
@@ -301,10 +294,16 @@ namespace Persistance.Migrations
                 {
                     b.HasBaseType("Persistance.Entities.RentContract");
 
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("DriverLicenseId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Idno")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("PhysicalPersonRentContract");
@@ -320,7 +319,9 @@ namespace Persistance.Migrations
 
                     b.HasOne("Persistance.Entities.Transmission", "Transmission")
                         .WithMany("Cars")
-                        .HasForeignKey("TransmissionTypeId1");
+                        .HasForeignKey("TransmissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Persistance.Entities.Client", b =>

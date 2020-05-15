@@ -17,7 +17,7 @@ namespace Persistance.Configuration
 					.OnDelete(DeleteBehavior.Cascade);
 			builder.HasOne(c => c.Transmission)
 					.WithMany(t => t.Cars)
-					.HasForeignKey(c => c.TransmissionTypeId)
+					.HasForeignKey(c => c.TransmissionId)
 					.OnDelete(DeleteBehavior.Cascade)
 					.IsRequired();
 			builder.HasMany(c => c.RentContracts)

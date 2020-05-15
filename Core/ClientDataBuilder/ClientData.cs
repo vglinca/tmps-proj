@@ -29,5 +29,7 @@ namespace Core.ClientDataBuilder
 		public string PassportIdentifier;
 		public string VisaIdentifier;
 		public string MigrationNumber;
+
+		public int RentCost;
 	}
 }

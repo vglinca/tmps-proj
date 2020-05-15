@@ -19,5 +19,6 @@ namespace App.RentContractStrategy.Interfaces
 			_service = service;
 		}
 		public abstract Task GatherContractInfo();
+		public abstract int CalculateDiscount(int total, int days);
 	}
 }

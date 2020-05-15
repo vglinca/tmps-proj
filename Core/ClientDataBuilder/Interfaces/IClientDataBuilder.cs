@@ -26,6 +26,7 @@ namespace Core.ClientDataBuilder.Interfaces
 		IClientDataBuilder PassportIdentifier(string passportIdentifier);
 		IClientDataBuilder VisaIdentifier(string visaIdentifier);
 		IClientDataBuilder MigrationNumber(string migrationNumber);
+		IClientDataBuilder RentCost(int rentCost);
 		ClientData Build();
 	}
 }
