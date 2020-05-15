@@ -1,8 +1,10 @@
-﻿using Core.Services.Interfaces;
+﻿using Core.Exceptions;
+using Core.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Persistance.Context;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,7 +29,7 @@ namespace Core.Services
 			var entity = await _ctx.Set<TEntity>().FindAsync(id);
 			if(entity == null)
 			{
-				throw new ArgumentNullException(nameof(entity));
+				throw new EntityNotFoundException($"{typeof(TEntity).ToString().Split('.').Last()} with id {id} not found.");
 			}
 			_ctx.Set<TEntity>().Remove(entity);
 			await _ctx.SaveChangesAsync();
@@ -40,7 +42,12 @@ namespace Core.Services
 
 		public async Task<TEntity> GetByIdAsync<TEntity>(long id) where TEntity : class
 		{
-			return await _ctx.FindAsync<TEntity>(id);
+			var entity = await _ctx.FindAsync<TEntity>(id);
+			if(entity == null)
+			{
+				throw new EntityNotFoundException($"{typeof(TEntity).ToString().Split('.').Last()} with id {id} not found.");
+			}
+			return entity;
 		}
 
 		public async Task UpdateAsync<TEntity>(TEntity entity) where TEntity : class

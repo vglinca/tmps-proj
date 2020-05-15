@@ -2,6 +2,8 @@
 using Core.ClientDataBuilder;
 using Core.ContractCommand;
 using Core.Services.Interfaces;
+using Persistance.ContractFactory;
+using Persistance.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,14 +11,26 @@ using System.Threading.Tasks;
 
 namespace Core.ContractCommand
 {
-	class ForeignPersonContractCommand : CreateContractCommandBase
+	public class ForeignPersonContractCommand : CreateContractCommandBase
 	{
 		public ForeignPersonContractCommand(IRepositoryService service, IMapper mapper) : base(service, mapper)
 		{
 		}
-		public override Task Execute(ClientData clientData)
+		public async override Task Execute(ClientData clientData)
 		{
-			return null;
+			var contract = new ForeignPersonRentContractFactory().CreateRentContract() as ForeignerRentContract;
+			var client = _mapper.Map<Client>(clientData);
+
+			var car = await _service.GetByIdAsync<Car>(clientData.CarId);
+
+			await _service.AddAsync<Client>(client);
+
+			_mapper.Map(clientData, contract);
+
+			contract.ClientId = client.Id;
+			contract.RentCost = car.PricePerDay * (int) ((clientData.RentEndDate - clientData.RentStartDate).TotalDays);
+
+			await _service.AddAsync<ForeignerRentContract>(contract);
 		}
 	}
 }

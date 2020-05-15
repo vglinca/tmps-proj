@@ -24,7 +24,8 @@ namespace Persistance.Context
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder
-				.UseSqlServer(@"Server=.;Database=RentCarDb;Trusted_Connection=True;");
+				.UseSqlServer(@"Server=.;Database=RentCarDb;Trusted_Connection=True;")
+				.UseLazyLoadingProxies();
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

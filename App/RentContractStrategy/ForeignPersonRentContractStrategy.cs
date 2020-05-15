@@ -1,18 +1,21 @@
 ﻿using App.RentContractStrategy.Interfaces;
 using Core.ContractCommand;
+using Core.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using static Core.Utils.Resolver;
 
 namespace App.RentContractStrategy
 {
 	public class ForeignPersonRentContractStrategy : RentContractCreationStrategyBase
 	{
-		public ForeignPersonRentContractStrategy(CreateContractCommandBase command) : base(command)
+		public ForeignPersonRentContractStrategy(CreateContractCommandBase command, IRepositoryService service) : base(command, service)
 		{
 		}
 
-		public override void GatherContractInfo()
+		public override async Task GatherContractInfo()
 		{
 		}
 	}
