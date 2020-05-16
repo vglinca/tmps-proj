@@ -63,6 +63,7 @@ namespace App.RentContractStrategy
 			{
 				var car = await _service.GetByIdAsync<Car>(carId);
 				var total = car.PricePerDay * (int) ((startDate - endDate).TotalDays);
+
 				total = CalculateDiscount(total, (int)(startDate - endDate).TotalDays);
 
 				Console.WriteLine($"Total: ${total}");
@@ -136,14 +137,17 @@ namespace App.RentContractStrategy
 		{
 			if(days > 20 && days < 31 && total < 3000)
 			{
+				Console.WriteLine("We offer a 3% discount.");
 				total -= (int) (total * 0.03);
 			}
 			else if(days < 20 && days < 31 && total > 3000)
 			{
+				Console.WriteLine("We offer a 5% discount.");
 				total -= (int) (total * 0.05);
 			}
 			else if(days >= 31)
 			{
+				Console.WriteLine("We offer a 8% discount.");
 				total -= (int) (total * 0.08);
 			}
 			return total;

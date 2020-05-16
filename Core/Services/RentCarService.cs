@@ -53,6 +53,7 @@ namespace Core.Services
 				logMsg
 					.AppendLine(DateTime.UtcNow.ToString())
 					.AppendLine($"Try to get unexisting {entityName} with id {id}.")
+					.AppendLine("Return <null> to client.")
 					.AppendLine(Delimeter);
 				return null;
 			}

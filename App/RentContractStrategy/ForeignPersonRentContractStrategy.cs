@@ -94,7 +94,6 @@ namespace App.RentContractStrategy
 							await _command.Execute(clientData);
 							Console.ForegroundColor = ConsoleColor.Green;
 							Console.WriteLine("Request has been successfully confirmed.....");
-
 						}
 						catch (Exception)
 						{
