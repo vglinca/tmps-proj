@@ -13,33 +13,32 @@ namespace App.RentContractStrategy
 	{
 		public JuridicalPersonRentContractStrategy(CreateContractCommandBase command, IRepositoryService service) : base(command, service)
 		{}
-
 		
 		public override async Task GatherContractInfo()
 		{
-			Console.WriteLine("Enter company name: ");
+			Console.Write("Enter company name: ");
 			var company = Console.ReadLine();
 
-			Console.WriteLine("Enter company address: ");
+			Console.Write("Enter company address: ");
 			var address = Console.ReadLine();
 
-			Console.WriteLine("Enter company registration date: ");
+			Console.Write("Enter company registration date: ");
 			DateTime regDate = DateTime.UtcNow;
 			while (!DateTime.TryParse(Console.ReadLine(), out regDate))
 			{
 				Console.WriteLine("Wrong date format. Enter again: ");
 			}
 
-			Console.WriteLine("Present Upper House Extract Document: ");
+			Console.Write("Present Upper House Extract Document: ");
 			var upperHouseExtractIdentifier = Console.ReadLine();
 
-			Console.WriteLine("Show administration card: ");
+			Console.Write("Show administration card: ");
 			var card = Console.ReadLine();
 
-			Console.WriteLine("Present driver license: ");
+			Console.Write("Present driver license: ");
 			var driverLicense = Console.ReadLine();
 
-			Console.WriteLine("Present Genreal Manager Approvement: ");
+			Console.Write("Present Genreal Manager Approvement: ");
 			var signature = Console.ReadLine();
 
 			Console.Write("Chosen car number: ");
@@ -62,9 +61,9 @@ namespace App.RentContractStrategy
 			try
 			{
 				var car = await _service.GetByIdAsync<Car>(carId);
-				var total = car.PricePerDay * (int) ((startDate - endDate).TotalDays);
+				var total = car.PricePerDay * (int) ((endDate - startDate).TotalDays);
 
-				total = CalculateDiscount(total, (int)(startDate - endDate).TotalDays);
+				total = CalculateDiscount(total, (int)(endDate - startDate).TotalDays);
 
 				Console.WriteLine($"Total: ${total}");
 				Console.WriteLine();
@@ -80,7 +79,7 @@ namespace App.RentContractStrategy
 				switch (yesNo)
 				{
 					case 1:
-						Console.WriteLine("Enter bank account: ");
+						Console.Write("Enter debit card number: ");
 						var iban = Console.ReadLine();
 
 						Console.WriteLine();
@@ -103,9 +102,19 @@ namespace App.RentContractStrategy
 						var color = Console.ForegroundColor;
 						try
 						{
-							await _command.Execute(clientData);
+							var rentContract = (JuridicalPersonRentContract)await _command.Execute(clientData);
 							Console.ForegroundColor = ConsoleColor.Green;
 							Console.WriteLine("Request has been successfully confirmed.....");
+							Console.WriteLine();
+							Console.ForegroundColor = color;
+							Console.WriteLine("\t\t\tCONTRACT DETAILS");
+							Console.WriteLine();
+							Console.ForegroundColor = ConsoleColor.DarkCyan;
+							Console.WriteLine($"Company: {rentContract.Client.Name}");
+							Console.WriteLine($"Registered on {rentContract.CompanyRegistrationDate.ToShortDateString()}");
+							Console.WriteLine($"Rent from {rentContract.RentStartDate.ToShortDateString()} to {rentContract.RentEndDate.ToShortDateString()}");
+							Console.WriteLine($"Auto: {rentContract.Car.ModelName}");
+							Console.WriteLine($"\t\tTotal: ${rentContract.RentCost}");
 						}
 						catch (Exception)
 						{

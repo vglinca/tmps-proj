@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Core.ClientDataBuilder;
 using Core.Services.Interfaces;
+using Persistance.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,6 +18,6 @@ namespace Core.ContractCommand
 			_service = service;
 			_mapper = mapper;
 		}
-		public abstract Task Execute(ClientData clientData);
+		public abstract Task<RentContract> Execute(ClientData clientData);
 	}
 }

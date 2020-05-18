@@ -15,7 +15,7 @@ namespace Core.ContractCommand
 		public JuridicalPersonContractCommand(IRepositoryService service, IMapper mapper) : base(service, mapper)
 		{
 		}
-		public async override Task Execute(ClientData clientData)
+		public async override Task<RentContract> Execute(ClientData clientData)
 		{
 			var contract = new JuridicalPersonRentContractFactory().CreateRentContract() as JuridicalPersonRentContract;
 			var client = _mapper.Map<Client>(clientData);
@@ -26,7 +26,7 @@ namespace Core.ContractCommand
 
 			contract.ClientId = client.Id;
 
-			await _service.AddAsync<JuridicalPersonRentContract>(contract);
+			return await _service.AddAsync<JuridicalPersonRentContract>(contract);
 		}
 	}
 }

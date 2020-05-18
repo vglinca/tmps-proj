@@ -15,7 +15,7 @@ namespace Core.ContractCommand
 		public PhysicalPersonContractCommand(IRepositoryService service, IMapper mapper) : base(service, mapper)
 		{
 		}
-		public async override Task Execute(ClientData clientData)
+		public async override Task<RentContract> Execute(ClientData clientData)
 		{
 			var contract = new PhysicalPersonRentContractFactory().CreateRentContract() as PhysicalPersonRentContract;
 			var client = _mapper.Map<Client>(clientData);
@@ -27,9 +27,8 @@ namespace Core.ContractCommand
 			_mapper.Map(clientData, contract);
 
 			contract.ClientId = client.Id;
-			//contract.RentCost = car.PricePerDay * (int) ((clientData.RentEndDate - clientData.RentStartDate).TotalDays);
 
-			await _service.AddAsync<PhysicalPersonRentContract>(contract);
+			return await _service.AddAsync<PhysicalPersonRentContract>(contract);
 		}
 	}
 }

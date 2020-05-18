@@ -22,16 +22,16 @@ namespace App.RentContractStrategy
 			Console.Write("Your full name: ");
 			var fullName = Console.ReadLine();
 
-			Console.WriteLine("Present your passport: ");
+			Console.Write("Present your passport: ");
 			var passportId = Console.ReadLine();
 
-			Console.WriteLine("Present visa: ");
+			Console.Write("Present visa: ");
 			var visaId = Console.ReadLine();
 
-			Console.WriteLine("Present migration card: ");
+			Console.Write("Present migration card: ");
 			var migrationNumber = Console.ReadLine();
 
-			Console.WriteLine("Present International Driver License: ");
+			Console.Write("Present International Driver License: ");
 			var driverLicenseId = Console.ReadLine();
 
 			Console.Write("Chosen car number: ");
@@ -54,9 +54,9 @@ namespace App.RentContractStrategy
 			try
 			{
 				var car = await _service.GetByIdAsync<Car>(carId);
-				var total = car.PricePerDay * (int) ((startDate - endDate).TotalDays);
+				var total = car.PricePerDay * (int) ((endDate- startDate).TotalDays);
 
-				total = CalculateDiscount(total, (int) ((startDate - endDate).TotalDays));
+				total = CalculateDiscount(total, (int) ((endDate - startDate).TotalDays));
 
 				Console.WriteLine($"Total: ${total}");
 				Console.WriteLine();
@@ -70,7 +70,7 @@ namespace App.RentContractStrategy
 				switch (yesNo)
 				{
 					case 1:
-						Console.WriteLine("Enter card number: ");
+						Console.Write("Enter card number: ");
 						var iban = Console.ReadLine();
 
 						Console.WriteLine();
@@ -91,9 +91,18 @@ namespace App.RentContractStrategy
 						var color = Console.ForegroundColor;
 						try
 						{
-							await _command.Execute(clientData);
+							var rentContract = (ForeignerRentContract)await _command.Execute(clientData);
 							Console.ForegroundColor = ConsoleColor.Green;
 							Console.WriteLine("Request has been successfully confirmed.....");
+							Console.WriteLine();
+							Console.ForegroundColor = color;
+							Console.WriteLine("\t\t\tCONTRACT DETAILS");
+							Console.WriteLine();
+							Console.ForegroundColor = ConsoleColor.DarkCyan;
+							Console.WriteLine($"Client name: {rentContract.Client.Name}");
+							Console.WriteLine($"Rent from {rentContract.RentStartDate.ToShortDateString()} to {rentContract.RentEndDate.ToShortDateString()}");
+							Console.WriteLine($"Auto: {rentContract.Car.ModelName}");
+							Console.WriteLine($"\t\tTotal: ${rentContract.RentCost}");
 						}
 						catch (Exception)
 						{

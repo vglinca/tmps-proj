@@ -7,6 +7,7 @@ using Core.Services.Interfaces;
 using Persistance.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Core.Utils.Resolver;
@@ -17,6 +18,7 @@ namespace App
 	{
 		private readonly IRepositoryService _service;
 		private readonly IMapper _mapper;
+		const string Delimeter = "-------------------------------------------------------------------------------------------------------------------------------------------";
 		public ConsoleApp(ServiceResolver resolver, IMapper mapper)
 		{
 			_service = resolver(Core.Utils.ServiceType.RentCarService);
@@ -30,11 +32,14 @@ namespace App
 			{
 				var cars = await _service.GetAllAsync<Car>();
 
-				Console.WriteLine("\t\tCARS");
-				Console.WriteLine("{0,-20}{1,-30}{2,-50}{3,-20}{4,-10}", "Car number", "Model", "Engine", "Transmission", "Price/Day ($)");
+				Console.WriteLine("\t\t\t\t\t\t\t\tAVAILABLE CARS");
+				Console.WriteLine();
+				Console.WriteLine("\t{0,-20}{1,-30}{2,-50}{3,-10}{4,-10}", "Car number", "Model", "Engine", "Transmission", "Price/Day ($)");
+				Console.WriteLine(Delimeter);
 				foreach (var car in cars)
 				{
-					Console.WriteLine("{0,-20}{1,-30}{2,-50}{3,-20}{4,-10}", car.Id, car.ModelName, car.EngineDetails, car.Transmission.Title, car.PricePerDay);
+					Console.WriteLine("\t{0,-20}{1,-30}{2,-50}{3,-20}{4,-10}", car.Id, car.ModelName, car.EngineDetails, car.Transmission.Title, car.PricePerDay);
+					Console.WriteLine(Delimeter);
 				}
 
 				var clientTypes = await _service.GetAllAsync<ClientType>();
@@ -64,6 +69,8 @@ namespace App
 							await new JuridicalPersonRentContractStrategy(
 								new JuridicalPersonContractCommand(_service, _mapper), _service)
 								.GatherContractInfo();
+							break;
+						case 1488:
 							break;
 						default:
 							break;

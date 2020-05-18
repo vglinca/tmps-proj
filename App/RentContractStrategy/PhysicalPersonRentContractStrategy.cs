@@ -42,7 +42,7 @@ namespace App.RentContractStrategy
 			Console.Write("Chosen car number: ");
 			var carId = long.Parse(Console.ReadLine());
 
-			Console.WriteLine("Enter your idno: ");
+			Console.Write("Enter your idno: ");
 			var idno = Console.ReadLine();
 
 			Console.Write("When do You want to take a car? ");
@@ -93,9 +93,9 @@ namespace App.RentContractStrategy
 				}
 
 				var car = await _service.GetByIdAsync<Car>(carId);
-				var total = car.PricePerDay * (int) ((startDate - endDate).TotalDays);
+				var total = car.PricePerDay * (int) ((endDate - startDate).TotalDays);
 
-				total = CalculateDiscount(total, (int) ((startDate - endDate).TotalDays));
+				total = CalculateDiscount(total, (int) ((endDate - startDate).TotalDays));
 
 				Console.WriteLine($"Total: ${total}");
 				Console.WriteLine();
@@ -109,7 +109,7 @@ namespace App.RentContractStrategy
 				switch (yesNo)
 				{
 					case 1:
-						Console.WriteLine("Enter card number: ");
+						Console.Write("Enter card number: ");
 						var iban = Console.ReadLine();
 
 						Console.WriteLine();
@@ -130,10 +130,19 @@ namespace App.RentContractStrategy
 						var color = Console.ForegroundColor;
 						try
 						{
-							await _command.Execute(clientData);
+							var rentContract = (PhysicalPersonRentContract)await _command.Execute(clientData);
 							Console.ForegroundColor = ConsoleColor.Green;
 							Console.WriteLine("Request has been successfully confirmed.....");
-							
+							Console.WriteLine();
+							Console.ForegroundColor = color;
+							Console.WriteLine("\t\t\tCONTRACT DETAILS");
+							Console.WriteLine();
+							Console.ForegroundColor = ConsoleColor.DarkCyan;
+							Console.WriteLine($"Client name: {rentContract.Client.Name}");
+							Console.WriteLine($"Phone: {rentContract.Phone}");
+							Console.WriteLine($"Rent from {rentContract.RentStartDate.ToShortDateString()} to {rentContract.RentEndDate.ToShortDateString()}");
+							Console.WriteLine($"Auto: {rentContract.Car.ModelName}");
+							Console.WriteLine($"\t\tTotal: ${rentContract.RentCost}");
 						}
 						catch (Exception)
 						{
