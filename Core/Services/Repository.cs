@@ -24,7 +24,7 @@ namespace Core.Services
 			return entity;
 		}
 
-		public async Task Delete<TEntity>(long id) where TEntity : class
+		public async Task DeleteAsync<TEntity>(long id) where TEntity : class
 		{
 			var entity = await _ctx.Set<TEntity>().FindAsync(id);
 			if(entity == null)

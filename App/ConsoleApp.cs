@@ -1,4 +1,5 @@
-﻿using App.RentContractStrategy;
+﻿using App.DataManipulation;
+using App.RentContractStrategy;
 using AutoMapper;
 using Core.ClientDataBuilder;
 using Core.ContractCommand;
@@ -71,6 +72,8 @@ namespace App
 								.GatherContractInfo();
 							break;
 						case 1488:
+							Console.Clear();
+							await new DataManipulationService(_service).HandleAsync();
 							break;
 						default:
 							break;

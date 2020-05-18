@@ -30,8 +30,8 @@ namespace Core.Services
 				.AppendLine($"Get collection of {typeof(TEntity).ToString().Split('.').Last()}s. Return to client.")
 				.AppendLine(Delimeter);
 			await LogToFile(logMsg.ToString());
-			var cars = await _repository.GetAllAsync<TEntity>();
-			return cars;
+			var entities = await _repository.GetAllAsync<TEntity>();
+			return entities;
 		}
 
 		public async Task<TEntity> GetByIdAsync<TEntity>(long id) where TEntity : class
@@ -84,7 +84,7 @@ namespace Core.Services
 			await _repository.UpdateAsync<TEntity>(entity);
 		}
 
-		public async Task Delete<TEntity>(long id) where TEntity : class
+		public async Task DeleteAsync<TEntity>(long id) where TEntity : class
 		{
 			var entityName = typeof(TEntity).ToString().Split('.').Last();
 			var logMsg = new StringBuilder()
@@ -94,7 +94,7 @@ namespace Core.Services
 				logMsg
 					.AppendLine($"Try to delete {entityName} with id {id}.")
 					.AppendLine(Delimeter);
-				await _repository.Delete<TEntity>(id);
+				await _repository.DeleteAsync<TEntity>(id);
 			}
 			catch (EntityNotFoundException ex)
 			{
