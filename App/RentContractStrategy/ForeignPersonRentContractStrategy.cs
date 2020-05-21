@@ -1,6 +1,7 @@
 ﻿using App.RentContractStrategy.Interfaces;
 using Core.ClientDataBuilder;
 using Core.ContractCommand;
+using Core.ErrorDecorator;
 using Core.Services.Interfaces;
 using Persistance.Entities;
 using System;
@@ -43,6 +44,17 @@ namespace App.RentContractStrategy
 			{
 				Console.WriteLine("Wrong date format. Enter again: ");
 			}
+			if (startDate < DateTime.Now)
+			{
+				if (_commonError != null)
+				{
+					_commonError = new DateTimeErrorDecorator(_commonError, $"\nStart date must be a valid date. {startDate} has been entered.");
+				}
+				else
+				{
+					_commonError = new DateTimeErrorDecorator(new CommonError("\nAn error happened."), $"\nStart date must be a valid date. {startDate} has been entered.");
+				}
+			}
 
 			Console.Write("What is the end date of rent? ");
 			DateTime endDate = DateTime.UtcNow;
@@ -50,10 +62,30 @@ namespace App.RentContractStrategy
 			{
 				Console.WriteLine("Wrong date format. Enter again: ");
 			}
+			if (endDate < DateTime.Now || endDate < startDate)
+			{
+				if (_commonError != null)
+				{
+					_commonError = new DateTimeErrorDecorator(_commonError, $"\nEnding date must be a valid date. {endDate} has been entered.");
+				}
+				else
+				{
+					_commonError = new DateTimeErrorDecorator(new CommonError("\nAn error happened."), $"\nEnding date must be a valid date. {endDate} has been entered.");
+				}
+			}
 
 			try
 			{
+				if (_commonError != null)
+				{
+					throw new Exception();
+				}
 				var car = await _service.GetByIdAsync<Car>(carId);
+				if (car == null)
+				{
+					_commonError = new NotFoundErrorDecorator(_commonError, $"\nEntered car number is wrong. Car with number {carId} doesn't exist.");
+				}
+
 				var total = car.PricePerDay * (int) ((endDate- startDate).TotalDays);
 
 				total = CalculateDiscount(total, (int) ((endDate - startDate).TotalDays));
@@ -72,6 +104,12 @@ namespace App.RentContractStrategy
 					case 1:
 						Console.Write("Enter card number: ");
 						var iban = Console.ReadLine();
+
+						if (iban.Length != 16)
+						{
+							_commonError = new InvalidCardNumberErrorDecorator(_commonError, "\nInvalid card number was entered. Card number must contain 16 numbers.");
+							throw new Exception();
+						}
 
 						Console.WriteLine();
 						var clientData = new ClientDataBuilder()
@@ -124,8 +162,18 @@ namespace App.RentContractStrategy
 			}
 			catch (Exception)
 			{
-
-				throw;
+				if (_commonError != null)
+				{
+					var color = Console.ForegroundColor;
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine(_commonError.ShowErrorMessage());
+					Console.ForegroundColor = color;
+					Environment.Exit(0);
+				}
+				else
+				{
+					Console.WriteLine("An unexpected fault happened.");
+				}
 			}
 		}
 

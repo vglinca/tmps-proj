@@ -5,10 +5,7 @@ using Core.ErrorDecorator;
 using Core.Services.Interfaces;
 using Persistance.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using static Core.Utils.Resolver;
 
 namespace App.RentContractStrategy
 {
@@ -70,7 +67,7 @@ namespace App.RentContractStrategy
 				Console.WriteLine("Wrong date format. Enter again: ");
 			}
 
-			if(endDate < DateTime.Now)
+			if(endDate < DateTime.Now || endDate < startDate)
 			{
 				if (_commonError != null)
 				{
@@ -93,6 +90,12 @@ namespace App.RentContractStrategy
 				}
 
 				var car = await _service.GetByIdAsync<Car>(carId);
+
+				if(car == null)
+				{
+					_commonError = new NotFoundErrorDecorator(_commonError, $"\nEntered car number is wrong. Car with number {carId} doesn't exist.");
+				}
+
 				var total = car.PricePerDay * (int) ((endDate - startDate).TotalDays);
 
 				total = CalculateDiscount(total, (int) ((endDate - startDate).TotalDays));
@@ -109,8 +112,14 @@ namespace App.RentContractStrategy
 				switch (yesNo)
 				{
 					case 1:
-						Console.Write("Enter card number: ");
+						Console.Write("Enter card number (sixteen digits): ");
 						var iban = Console.ReadLine();
+
+						if(iban.Length != 16)
+						{
+							_commonError = new InvalidCardNumberErrorDecorator(_commonError, "\nInvalid card number was entered. Card number must contain 16 numbers.");
+							throw new Exception();
+						}
 
 						Console.WriteLine();
 						var clientData = new ClientDataBuilder()
@@ -171,6 +180,10 @@ namespace App.RentContractStrategy
 					Console.WriteLine(_commonError.ShowErrorMessage());
 					Console.ForegroundColor = color;
 					Environment.Exit(0);
+				}
+				else
+				{
+					Console.WriteLine("An unexpected fault happened.");
 				}
 			}
 		}

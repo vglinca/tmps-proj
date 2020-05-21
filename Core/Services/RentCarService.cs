@@ -28,7 +28,7 @@ namespace Core.Services
 			logMsg
 				.AppendLine(DateTime.UtcNow.ToString())
 				.AppendLine($"Get collection of {typeof(TEntity).ToString().Split('.').Last()}s. Return to client.")
-				.AppendLine(Delimeter);
+				.Append(Delimeter);
 			await LogToFile(logMsg.ToString());
 			var entities = await _repository.GetAllAsync<TEntity>();
 			return entities;
@@ -45,16 +45,17 @@ namespace Core.Services
 				logMsg
 					.AppendLine(DateTime.UtcNow.ToString())
 					.AppendLine($"Get entity {entityName} with id {id}. Return to client.")
-					.AppendLine(Delimeter);
+					.Append(Delimeter);
 				return entity;
 			}
 			catch (EntityNotFoundException ex)
 			{
 				logMsg
 					.AppendLine(DateTime.UtcNow.ToString())
+					.AppendLine($"{nameof(EntityNotFoundException)} was thrown.")
 					.AppendLine($"Try to get unexisting {entityName} with id {id}.")
 					.AppendLine("Return <null> to client.")
-					.AppendLine(Delimeter);
+					.Append(Delimeter);
 				return null;
 			}
 			finally
@@ -68,7 +69,7 @@ namespace Core.Services
 			logMsg
 				.AppendLine(DateTime.UtcNow.ToString())
 				.AppendLine($"Add new {typeof(TEntity).ToString().Split('.').Last()}.")
-				.AppendLine(Delimeter);
+				.Append(Delimeter);
 			await LogToFile(logMsg.ToString());
 			return await _repository.AddAsync<TEntity>(entity);
 		}
@@ -79,7 +80,7 @@ namespace Core.Services
 			logMsg
 				.AppendLine(DateTime.UtcNow.ToString())
 				.AppendLine($"Updating {typeof(TEntity).ToString().Split('.').Last()}.")
-				.AppendLine(Delimeter);
+				.Append(Delimeter);
 			await LogToFile(logMsg.ToString());
 			await _repository.UpdateAsync<TEntity>(entity);
 		}
@@ -93,16 +94,16 @@ namespace Core.Services
 			{
 				logMsg
 					.AppendLine($"Try to delete {entityName} with id {id}.")
-					.AppendLine(Delimeter);
+					.Append(Delimeter);
 				await _repository.DeleteAsync<TEntity>(id);
 			}
 			catch (EntityNotFoundException ex)
 			{
 				logMsg
+					.AppendLine($"{nameof(EntityNotFoundException)} was thrown.")
 					.AppendLine($"Trying to delete unexisting {entityName} with id {id}.")
 					.AppendLine("Returning error message.")
-					.AppendLine(Delimeter);
-				throw;
+					.Append(Delimeter);
 			}
 			finally
 			{
